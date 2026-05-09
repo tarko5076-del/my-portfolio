@@ -1,0 +1,227 @@
+@import url('https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@300;400;600;700&family=Space+Mono:wght@400;700&display=swap');
+@import "tailwindcss";
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+:root {
+  --portfolio-bg: #0d0d0d;
+  --portfolio-text: #f0ede6;
+  --portfolio-muted: rgba(240, 237, 230, 0.52);
+  --portfolio-soft: rgba(240, 237, 230, 0.28);
+  --portfolio-line: rgba(255, 255, 255, 0.1);
+  --portfolio-accent: #c8ff00;
+}
+
+body {
+  background: var(--portfolio-bg);
+  font-family: 'Space Grotesk', sans-serif;
+}
+
+.portfolio-section {
+  position: relative;
+  overflow: hidden;
+  background: var(--portfolio-bg);
+  color: var(--portfolio-text);
+  font-family: 'Space Grotesk', sans-serif;
+  padding: 6.5rem 1.5rem;
+}
+
+.portfolio-section::before {
+  content: '';
+  position: absolute;
+  inset: 0;
+  background-image:
+    linear-gradient(rgba(255,255,255,0.04) 1px, transparent 1px),
+    linear-gradient(90deg, rgba(255,255,255,0.04) 1px, transparent 1px);
+  background-size: 88px 88px;
+  pointer-events: none;
+}
+
+.portfolio-section::after {
+  content: '';
+  position: absolute;
+  top: 20%;
+  left: 50%;
+  width: 560px;
+  height: 560px;
+  transform: translateX(-50%);
+  background: radial-gradient(circle, rgba(200,255,0,0.035) 0%, transparent 70%);
+  pointer-events: none;
+}
+
+.portfolio-inner {
+  position: relative;
+  z-index: 1;
+  max-width: 72rem;
+  margin: 0 auto;
+}
+
+.section-label {
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  font-family: 'Space Mono', monospace;
+  font-size: 0.68rem;
+  letter-spacing: 0.15em;
+  color: rgba(240,237,230,0.4);
+  text-transform: uppercase;
+  border: 1px solid rgba(255,255,255,0.08);
+  padding: 0.4rem 0.9rem;
+  margin-bottom: 1.5rem;
+}
+
+.live-dot {
+  width: 6px;
+  height: 6px;
+  background: var(--portfolio-accent);
+  border-radius: 50%;
+  display: inline-block;
+  animation: blink-dot 2s infinite;
+  flex-shrink: 0;
+}
+
+.section-title {
+  color: var(--portfolio-text);
+  font-size: clamp(2.4rem, 7vw, 3.8rem);
+  font-weight: 700;
+  line-height: 1.05;
+  letter-spacing: 0;
+  margin: 0;
+}
+
+.section-title .accent,
+.text-accent {
+  color: var(--portfolio-accent);
+}
+
+.section-copy {
+  color: var(--portfolio-muted);
+  font-size: 1rem;
+  line-height: 1.75;
+  font-weight: 300;
+}
+
+.portfolio-card {
+  background: rgba(13, 13, 13, 0.92);
+  border: 1px solid var(--portfolio-line);
+  color: var(--portfolio-text);
+  transition: border-color 0.2s, background 0.2s, transform 0.2s;
+}
+
+.portfolio-card:hover {
+  border-color: rgba(200, 255, 0, 0.45);
+  background: rgba(20, 20, 20, 0.96);
+}
+
+.mono-text {
+  font-family: 'Space Mono', monospace;
+  letter-spacing: 0.12em;
+  text-transform: uppercase;
+}
+
+.portfolio-chip {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  min-height: 2.45rem;
+  border: 1px solid var(--portfolio-line);
+  background: #0d0d0d;
+  color: rgba(240,237,230,0.68);
+  padding: 0.7rem 1rem;
+  font-family: 'Space Mono', monospace;
+  font-size: 0.68rem;
+  letter-spacing: 0.12em;
+  text-transform: uppercase;
+  transition: background 0.15s, color 0.15s, border-color 0.15s;
+}
+
+.portfolio-chip:hover,
+.portfolio-chip.active {
+  background: var(--portfolio-text);
+  color: var(--portfolio-bg);
+  border-color: var(--portfolio-text);
+}
+
+.portfolio-chip.active:hover {
+  background: var(--portfolio-accent);
+  border-color: var(--portfolio-accent);
+}
+
+.portfolio-input {
+  width: 100%;
+  border: 1px solid var(--portfolio-line);
+  background: rgba(13, 13, 13, 0.88);
+  color: var(--portfolio-text);
+  padding: 1rem 1.1rem;
+  outline: none;
+  transition: border-color 0.15s, background 0.15s;
+}
+
+.portfolio-input:focus {
+  border-color: rgba(200, 255, 0, 0.55);
+  background: #0d0d0d;
+}
+
+.portfolio-input::placeholder {
+  color: rgba(240,237,230,0.24);
+}
+
+.portfolio-btn {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  background: var(--portfolio-text);
+  color: var(--portfolio-bg);
+  border: 1px solid var(--portfolio-text);
+  padding: 1rem 1.4rem;
+  font-family: 'Space Mono', monospace;
+  font-size: 0.7rem;
+  letter-spacing: 0.12em;
+  text-transform: uppercase;
+  text-decoration: none;
+  transition: background 0.15s, color 0.15s, border-color 0.15s;
+}
+
+.portfolio-btn:hover {
+  background: var(--portfolio-accent);
+  border-color: var(--portfolio-accent);
+}
+
+.portfolio-btn.secondary {
+  background: #0d0d0d;
+  color: var(--portfolio-text);
+  border-color: var(--portfolio-line);
+}
+
+.portfolio-btn.secondary:hover {
+  background: var(--portfolio-text);
+  color: var(--portfolio-bg);
+  border-color: var(--portfolio-text);
+}
+
+/* Typing cursor blink animation */
+@keyframes blink {
+  0%, 100% {
+    opacity: 1;
+  }
+  50% {
+    opacity: 0;
+  }
+}
+
+@keyframes blink-dot {
+  0%, 100% { opacity: 1; }
+  50% { opacity: 0.2; }
+}
+
+.animate-blink {
+  animation: blink 1s step-end infinite;
+}
+
+/* Smooth scrolling for anchor links in portfolio */
+html {
+  scroll-behavior: smooth;
+}
+
+/* You can add more custom styles below if you want */
