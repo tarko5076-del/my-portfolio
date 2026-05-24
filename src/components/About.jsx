@@ -2,14 +2,18 @@
 import { useEffect, useRef } from 'react';
 
 const skills = [
-  'React',
-  'Next.js',
-  'TypeScript',
-  'Tailwind CSS',
+  'HTML',
+  'CSS',
+  'JavaScript',
+   'React',
   'Node.js',
-  'PostgreSQL',
+  'PHP',
+  'MySQL',
+  'Bootstrap',
+  'Tailwind CSS',
   'Framer Motion',
-  'UI/UX Design',
+  'git + GitHub',
+  'Chapa API',
 ];
 
 export default function About() {
@@ -55,26 +59,30 @@ export default function About() {
         <div className="grid md:grid-cols-2 gap-12 items-start">
           <div className="space-y-6 section-copy">
             <p>
-              Hey there! I'm <span className="font-semibold text-accent">Tarko</span>,
-              a passionate full-stack developer from Ethiopia who lives for turning ideas
-              into clean, fast, and beautiful web experiences.
+              Hey! I'm <span className="font-semibold text-accent">Tarko</span>,
+              a full-stack developer from Ethiopia who recently completed a fullstack
+              development course and has been building real-world projects ever since.
             </p>
 
             <p>
-              I specialize in <strong>React</strong>, <strong>Next.js</strong>,
-              <strong> TypeScript</strong>, and modern JavaScript ecosystems. Whether it's
-              crafting pixel-perfect UIs, building scalable backends with Node.js/Express,
-              or optimizing performance until it feels effortless, I love the whole journey.
+              I've shipped projects across the full stack — from a{' '}
+              <strong>hotel guest services platform</strong> with React, PHP and MySQL,
+              to a <strong>Telegram-integrated voting app</strong> with Node.js and
+              React, to polished frontend clones and brand sites deployed live. I enjoy
+              working across the entire product — UI, logic, and backend.
             </p>
 
             <p>
-              Beyond code, I'm obsessed with great design, smooth animations, developer
-              experience, and creating tools that actually feel good to use. When I'm not
-              coding, you'll probably find me exploring UI trends or polishing small details.
+              I care about clean code, good design, and building things that actually
+              work well. Every project I've built has pushed me to learn something new —
+              JWT auth, <strong>Chapa payment integration</strong>, real-time state,
+              responsive layouts — and I'm hungry to keep growing in a real team
+              environment.
             </p>
 
-            <p className="font-medium text-xl text-accent pt-4">
-              Currently seeking exciting opportunities to build something meaningful.
+            <p className="font-medium text-xl text-accent pt-3">
+              Looking for an internship where I can contribute, learn fast, and grow
+              into a strong professional developer.
             </p>
           </div>
 

@@ -1,6 +1,7 @@
 // Contact.jsx
 import { useState } from 'react';
 import { motion as Motion, AnimatePresence } from 'framer-motion';
+import { FaGithub, FaInstagram, FaLinkedinIn, FaTelegramPlane } from 'react-icons/fa';
 
 const formVariants = {
   hidden: { opacity: 0, y: 40 },
@@ -24,42 +25,118 @@ const contactItems = [
   { label: 'Available for', value: 'Freelance and full-time' },
 ];
 
+const socialLinks = [
+  { label: 'GitHub', href: 'https://github.com/tarko5076-del', icon: FaGithub },
+  { label: 'LinkedIn', href: '#', icon: FaLinkedinIn },
+  { label: 'Telegram', href: 'https://t.me/mikios369', icon: FaTelegramPlane },
+  { label: 'Instagram', href: '#', icon: FaInstagram },
+];
+
+// ── Validation rules ──────────────────────────────────────────────
+const ETHIOPIAN_PHONE = /^(\+2519|09)\d{8}$/;
+const EMAIL_REGEX = /^[^\s@]+@[^\s@]+\.[^\s@]{2,}$/;
+
+function validateForm({ name, phone, email, message }) {
+  const errors = {};
+
+  // Name
+  if (!name.trim()) {
+    errors.name = 'Name is required.';
+  } else if (name.trim().length < 2) {
+    errors.name = 'Name must be at least 2 characters.';
+  } else if (name.trim().length > 60) {
+    errors.name = 'Name is too long.';
+  }
+
+  // Phone
+  if (!phone.trim()) {
+    errors.phone = 'Phone number is required.';
+  } else if (!ETHIOPIAN_PHONE.test(phone.replace(/\s/g, ''))) {
+    errors.phone = 'Enter a valid Ethiopian number (09xxxxxxxx or +2519xxxxxxxx).';
+  }
+
+  // Email
+  if (!email.trim()) {
+    errors.email = 'Email is required.';
+  } else if (!EMAIL_REGEX.test(email.trim())) {
+    errors.email = 'Enter a valid email address.';
+  }
+
+  // Message
+  if (!message.trim()) {
+    errors.message = 'Message is required.';
+  } else if (message.trim().length < 10) {
+    errors.message = 'Message must be at least 10 characters.';
+  } else if (message.trim().length > 1000) {
+    errors.message = 'Message is too long (max 1000 characters).';
+  }
+
+  return errors;
+}
+
 export default function Contact() {
   const [formData, setFormData] = useState({
     name: '',
+    phone: '',
     email: '',
-    subject: '',
     message: '',
   });
 
+  const [errors, setErrors] = useState({});
+  const [touched, setTouched] = useState({});
   const [status, setStatus] = useState(null);
   const [isSubmitting, setIsSubmitting] = useState(false);
 
   const handleChange = (event) => {
     const { name, value } = event.target;
     setFormData((prev) => ({ ...prev, [name]: value }));
+
+    // re-validate the field live once it has been touched
+    if (touched[name]) {
+      const newErrors = validateForm({ ...formData, [name]: value });
+      setErrors((prev) => ({ ...prev, [name]: newErrors[name] }));
+    }
+  };
+
+  const handleBlur = (event) => {
+    const { name } = event.target;
+    setTouched((prev) => ({ ...prev, [name]: true }));
+    const newErrors = validateForm(formData);
+    setErrors((prev) => ({ ...prev, [name]: newErrors[name] }));
   };
 
   const handleSubmit = async (event) => {
     event.preventDefault();
+
+    // mark all fields touched so errors show
+    setTouched({ name: true, phone: true, email: true, message: true });
+
+    const validationErrors = validateForm(formData);
+    if (Object.keys(validationErrors).length > 0) {
+      setErrors(validationErrors);
+      setStatus({ type: 'error', text: 'Please fix the errors above before sending.' });
+      return;
+    }
+
+    setErrors({});
     setIsSubmitting(true);
     setStatus({ type: 'sending', text: 'Sending your message...' });
 
     try {
-      const response = await fetch('https://formspree.io/f/YOUR_FORMSPREE_ID', {
+      const apiUrl = import.meta.env.VITE_API_URL ?? 'http://localhost:3000';
+      const response = await fetch(`${apiUrl}/send-telegram`, {
         method: 'POST',
-        headers: {
-          'Content-Type': 'application/json',
-          Accept: 'application/json',
-        },
+        headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify(formData),
       });
 
       if (response.ok) {
         setStatus({ type: 'success', text: "Message sent. I'll get back to you soon." });
-        setFormData({ name: '', email: '', subject: '', message: '' });
+        setFormData({ name: '', phone: '', email: '', message: '' });
+        setTouched({});
       } else {
-        setStatus({ type: 'error', text: 'Something went wrong. Please try again.' });
+        const data = await response.json().catch(() => null);
+        setStatus({ type: 'error', text: data?.error ?? 'Something went wrong. Please try again.' });
       }
     } catch {
       setStatus({ type: 'error', text: 'Network issue. Check your connection.' });
@@ -68,6 +145,10 @@ export default function Contact() {
       setTimeout(() => setStatus(null), 6000);
     }
   };
+
+  // helper — red border + error message under input
+  const fieldClass = (field) =>
+    `portfolio-input ${touched[field] && errors[field] ? 'border-red-400/70' : ''}`;
 
   return (
     <section id="contact" className="portfolio-section">
@@ -83,6 +164,7 @@ export default function Contact() {
         </div>
 
         <div className="grid md:grid-cols-5 gap-8 lg:gap-12">
+          {/* ── Left panel ── */}
           <Motion.div
             variants={formVariants}
             initial="hidden"
@@ -117,8 +199,32 @@ export default function Contact() {
                 </Motion.div>
               ))}
             </div>
+
+            <div>
+              <p className="mono-text text-[0.62rem] text-white/45 mb-4">
+                Socials
+              </p>
+              <div className="grid grid-cols-2 gap-3">
+                {socialLinks.map(({ label, href, icon: Icon }) => (
+                  <Motion.a
+                    key={label}
+                    href={href}
+                    target="_blank"
+                    rel="noreferrer"
+                    whileHover={{ y: -2 }}
+                    whileTap={{ scale: 0.97 }}
+                    className="portfolio-btn secondary gap-2"
+                    aria-label={`Open ${label} profile`}
+                  >
+                    <Icon aria-hidden="true" />
+                    {label}
+                  </Motion.a>
+                ))}
+              </div>
+            </div>
           </Motion.div>
 
+          {/* ── Form ── */}
           <Motion.div
             variants={formVariants}
             initial="hidden"
@@ -126,43 +232,99 @@ export default function Contact() {
             viewport={{ once: true }}
             className="md:col-span-3"
           >
-            <form onSubmit={handleSubmit} className="portfolio-card p-6 md:p-8 space-y-6">
+            <form onSubmit={handleSubmit} className="portfolio-card p-6 md:p-8 space-y-6" noValidate>
+
+              {/* Name + Phone */}
               <div className="grid md:grid-cols-2 gap-5">
-                {['name', 'email'].map((field) => (
-                  <Motion.div key={field} variants={inputVariants} whileFocus="focus">
-                    <label htmlFor={field} className="mono-text block text-[0.62rem] text-white/45 mb-3">
-                      {field === 'name' ? 'Your Name' : 'Email Address'}
-                    </label>
-                    <input
-                      type={field === 'email' ? 'email' : 'text'}
-                      id={field}
-                      name={field}
-                      value={formData[field]}
-                      onChange={handleChange}
-                      required
-                      className="portfolio-input"
-                      placeholder={field === 'name' ? 'Tarko' : 'hello@example.com'}
-                    />
-                  </Motion.div>
-                ))}
+                {/* Name */}
+                <Motion.div variants={inputVariants} whileFocus="focus">
+                  <label htmlFor="name" className="mono-text block text-[0.62rem] text-white/45 mb-3">
+                    Your Name
+                  </label>
+                  <input
+                    type="text"
+                    id="name"
+                    name="name"
+                    value={formData.name}
+                    onChange={handleChange}
+                    onBlur={handleBlur}
+                    className={fieldClass('name')}
+                    placeholder="Tarko"
+                  />
+                  <AnimatePresence>
+                    {touched.name && errors.name && (
+                      <Motion.p
+                        initial={{ opacity: 0, y: -4 }}
+                        animate={{ opacity: 1, y: 0 }}
+                        exit={{ opacity: 0, y: -4 }}
+                        className="mono-text text-[0.6rem] text-red-400 mt-2"
+                      >
+                        {errors.name}
+                      </Motion.p>
+                    )}
+                  </AnimatePresence>
+                </Motion.div>
+
+                {/* Phone */}
+                <Motion.div variants={inputVariants} whileFocus="focus">
+                  <label htmlFor="phone" className="mono-text block text-[0.62rem] text-white/45 mb-3">
+                    Phone Number
+                  </label>
+                  <input
+                    type="tel"
+                    id="phone"
+                    name="phone"
+                    value={formData.phone}
+                    onChange={handleChange}
+                    onBlur={handleBlur}
+                    className={fieldClass('phone')}
+                    placeholder="+251 900 000 000"
+                  />
+                  <AnimatePresence>
+                    {touched.phone && errors.phone && (
+                      <Motion.p
+                        initial={{ opacity: 0, y: -4 }}
+                        animate={{ opacity: 1, y: 0 }}
+                        exit={{ opacity: 0, y: -4 }}
+                        className="mono-text text-[0.6rem] text-red-400 mt-2"
+                      >
+                        {errors.phone}
+                      </Motion.p>
+                    )}
+                  </AnimatePresence>
+                </Motion.div>
               </div>
 
-              <div>
-                <label htmlFor="subject" className="mono-text block text-[0.62rem] text-white/45 mb-3">
-                  Subject
+              {/* Email */}
+              <Motion.div variants={inputVariants} whileFocus="focus">
+                <label htmlFor="email" className="mono-text block text-[0.62rem] text-white/45 mb-3">
+                  Email Address
                 </label>
                 <input
-                  type="text"
-                  id="subject"
-                  name="subject"
-                  value={formData.subject}
+                  type="email"
+                  id="email"
+                  name="email"
+                  value={formData.email}
                   onChange={handleChange}
-                  required
-                  className="portfolio-input"
-                  placeholder="Let's build something amazing"
+                  onBlur={handleBlur}
+                  className={fieldClass('email')}
+                  placeholder="you@example.com"
                 />
-              </div>
+                <AnimatePresence>
+                  {touched.email && errors.email && (
+                    <Motion.p
+                      initial={{ opacity: 0, y: -4 }}
+                      animate={{ opacity: 1, y: 0 }}
+                      exit={{ opacity: 0, y: -4 }}
+                      className="mono-text text-[0.6rem] text-red-400 mt-2"
+                    >
+                      {errors.email}
+                    </Motion.p>
+                  )}
+                </AnimatePresence>
+              </Motion.div>
 
+              {/* Message */}
               <div>
                 <label htmlFor="message" className="mono-text block text-[0.62rem] text-white/45 mb-3">
                   Your Message
@@ -172,13 +334,33 @@ export default function Contact() {
                   name="message"
                   value={formData.message}
                   onChange={handleChange}
-                  required
+                  onBlur={handleBlur}
                   rows={6}
-                  className="portfolio-input resize-none"
+                  className={`${fieldClass('message')} resize-none`}
                   placeholder="Tell me about your idea, project, or just say hi..."
                 />
+                <div className="flex justify-between items-center mt-2">
+                  <AnimatePresence>
+                    {touched.message && errors.message && (
+                      <Motion.p
+                        initial={{ opacity: 0, y: -4 }}
+                        animate={{ opacity: 1, y: 0 }}
+                        exit={{ opacity: 0, y: -4 }}
+                        className="mono-text text-[0.6rem] text-red-400"
+                      >
+                        {errors.message}
+                      </Motion.p>
+                    )}
+                  </AnimatePresence>
+                  <span className={`mono-text text-[0.6rem] ml-auto ${
+                    formData.message.length > 900 ? 'text-red-400' : 'text-white/30'
+                  }`}>
+                    {formData.message.length}/1000
+                  </span>
+                </div>
               </div>
 
+              {/* Submit */}
               <Motion.button
                 type="submit"
                 variants={buttonVariants}

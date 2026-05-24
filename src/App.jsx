@@ -5,6 +5,7 @@ import Navbar from './components/Navbar.jsx'
 import Footer from './components/Footer.jsx'
 import MotionSection from './components/MotionSection.jsx'
 import About from './components/About.jsx'
+import Experience from './components/Experience.jsx'
 export default function App() {
   return (
     <div className="min-h-screen bg-[#0d0d0d] text-[#f0ede6] antialiased">
@@ -12,6 +13,7 @@ export default function App() {
        
       <Hero />
       <About />
+      <Experience />
       <MotionSection id="projects">
         <Projects />
       </MotionSection>
