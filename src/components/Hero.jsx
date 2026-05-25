@@ -268,7 +268,7 @@ export default function Hero() {
 
           {/* buttons */}
           <div className="hero-btns">
-            <a href="/cv.pdf" download className="hero-btn primary">
+            <a href="/TARKO CV.pdf" download className="hero-btn primary">
               Download CV
             </a>
             <a href="#projects" className="hero-btn">

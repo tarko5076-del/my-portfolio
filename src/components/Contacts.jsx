@@ -1,7 +1,7 @@
 // Contact.jsx
 import { useState } from 'react';
 import { motion as Motion, AnimatePresence } from 'framer-motion';
-import { FaGithub, FaInstagram, FaLinkedinIn, FaTelegramPlane } from 'react-icons/fa';
+
 
 const formVariants = {
   hidden: { opacity: 0, y: 40 },
@@ -25,12 +25,6 @@ const contactItems = [
   { label: 'Available for', value: 'Freelance and full-time' },
 ];
 
-const socialLinks = [
-  { label: 'GitHub', href: 'https://github.com/tarko5076-del', icon: FaGithub },
-  { label: 'LinkedIn', href: '#', icon: FaLinkedinIn },
-  { label: 'Telegram', href: 'https://t.me/mikios369', icon: FaTelegramPlane },
-  { label: 'Instagram', href: '#', icon: FaInstagram },
-];
 
 // ── Validation rules ──────────────────────────────────────────────
 const ETHIOPIAN_PHONE = /^(\+2519|09)\d{8}$/;
@@ -200,28 +194,7 @@ export default function Contact() {
               ))}
             </div>
 
-            <div>
-              <p className="mono-text text-[0.62rem] text-white/45 mb-4">
-                Socials
-              </p>
-              <div className="grid grid-cols-2 gap-3">
-                {socialLinks.map(({ label, href, icon: Icon }) => (
-                  <Motion.a
-                    key={label}
-                    href={href}
-                    target="_blank"
-                    rel="noreferrer"
-                    whileHover={{ y: -2 }}
-                    whileTap={{ scale: 0.97 }}
-                    className="portfolio-btn secondary gap-2"
-                    aria-label={`Open ${label} profile`}
-                  >
-                    <Icon aria-hidden="true" />
-                    {label}
-                  </Motion.a>
-                ))}
-              </div>
-            </div>
+           
           </Motion.div>
 
           {/* ── Form ── */}
@@ -290,7 +263,7 @@ export default function Contact() {
                       >
                         {errors.phone}
                       </Motion.p>
-                    )}
+                    )} 
                   </AnimatePresence>
                 </Motion.div>
               </div>
