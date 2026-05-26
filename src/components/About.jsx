@@ -73,7 +73,7 @@ export default function About() {
             </p>
 
             <p>
-              I care about clean code, good design, and building things that actually
+              I care about  good design and building things that actually
               work well. Every project I've built has pushed me to learn something new —
               JWT auth, <strong>Chapa payment integration</strong>, real-time state,
               responsive layouts — and I'm hungry to keep growing in a real team

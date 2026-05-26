@@ -13,7 +13,7 @@ const projects = [
     id: 1,
     title: 'Ardent Hotel — Guest Services',
     description:
-      'A full-stack guest services platform for Ardent Hotel. Guests can browse the menu, manage a cart, and place food orders with cash or Stripe checkout.',
+      'A full-stack guest services platform for Ardent Hotel. Guests can browse the menu, manage a cart, and place food orders with cash or chapa checkout.',
     repoUrl: 'https://github.com/tarko5076-del/Ardent-hotel',
     status: 'Fullstack',
   },
