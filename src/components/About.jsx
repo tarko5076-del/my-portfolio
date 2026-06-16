@@ -80,10 +80,7 @@ export default function About() {
               environment.
             </p>
 
-            <p className="font-medium text-xl text-accent pt-3">
-              Looking for an internship where I can contribute, learn fast and grow
-              into a strong professional developer.
-            </p>
+  
           </div>
 
           <div className="space-y-8">
