@@ -32,7 +32,7 @@ const projects = [
     title: 'Learning Managment system',
     description:
       'a full stack learning management system with react frontend and Django for backend.',
-    repoUrl: 'https://github.com/tarko5076-del/learning-management-system',
+    repoUrl: 'https://github.com/tarko5076-del/learning-managment-system',
     status: 'Fullstack',
   },
 
