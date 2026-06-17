@@ -29,12 +29,11 @@ const projects = [
 
   {
     id: 3,
-    title: 'Memory Card Game',
+    title: 'Learning Managment system',
     description:
-      'A polished memory matching game built in React with animations and multiple difficulty levels.',
-    liveUrl: 'https://memory-card-game-9f38.vercel.app/',
-    repoUrl: 'https://github.com/tarko5076-del/memory-card-game',
-    status: 'Playable',
+      'a full stack learning management system with react frontend and Django for backend.',
+    repoUrl: 'https://github.com/tarko5076-del/learning-management-system',
+    status: 'Fullstack',
   },
 
   {
