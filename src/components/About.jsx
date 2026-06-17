@@ -7,13 +7,13 @@ const skills = [
   'JavaScript',
    'React',
   'Node.js',
-  'PHP',
-  'MySQL',
+  'Python',
+  'postgreSQL',
   'Bootstrap',
   'Tailwind CSS',
   'Framer Motion',
   'git + GitHub',
-  'Chapa API',
+  'Docker',
 ];
 
 export default function About() {
